@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <None Update="ShoppingLite">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

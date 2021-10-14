@@ -61,7 +61,7 @@ namespace Shopping
                     Console.WriteLine($"Ware Id: {w.WareId}, Serial Number: {w.SerialNumber}, Location Name: {w.Location.Name}");
                 }
 
-                Ware update = new(5, null, p, new("Shelf"));
+                Ware update = new(w2.WareId, null, p, new("Shelf"));
                 p.UpdateWare(update);
                 p.RemoveWare(w3);
 
@@ -72,11 +72,13 @@ namespace Shopping
                 unitOfWork.OfferRepository.Create(o);
 
                 done = unitOfWork.SaveChangesAsync().Result;
+                o = null;
+                int id = p.ProductTypeId;
+                p = null;
+                ProductType selected = unitOfWork.ProductTypeRepository.GetByIdAsyncWithRelationships(1).Result;
 
-                p = unitOfWork.ProductTypeRepository.GetByIdAsync(p.ProductTypeId).Result;
-
-                Console.WriteLine($"Product Id: {p.ProductTypeId}, Type: {p.Type}, Price: {p.CurrentPrice()}, Category Name: {p.Category.Name}");
-                foreach (var w in p.Wares)
+                Console.WriteLine($"Product Id: {selected.ProductTypeId}, Type: {selected.Type}, Price: {selected.CurrentPrice()}, Category Name: {selected.Category.Name}");
+                foreach (var w in selected.Wares)
                 {
                     Console.WriteLine($"Ware Id: {w.WareId}, Serial Number: {w.SerialNumber}, Location Name: {w.Location.Name}");
                 }

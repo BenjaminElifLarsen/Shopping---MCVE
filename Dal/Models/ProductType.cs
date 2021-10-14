@@ -24,20 +24,21 @@ namespace Dal.Models
 
         }
 
-        public ProductType(string type, int price, Category category, IEnumerable<Ware> wares = null)
+        public ProductType(string type, int price, Category category, IEnumerable<Ware> wares = null, IEnumerable<OfferProductType> offerProductTypes = null )
         {
             Type = type;
             Price = price;
             Category = category;
             Wares = wares ?? Array.Empty<Ware>();
+            OfferProductTypes = offerProductTypes ?? Array.Empty<OfferProductType>();
         }
 
-        public int CurrentPrice()
+        public float CurrentPrice()
         {
-            int currentPrice = Price;
+            float currentPrice = Price;
             foreach(Offer o in _offerProductTypes.Select(op => op.Offer))
             {
-                currentPrice *= 1-(o.Percentage / 100);
+                currentPrice *= (1-((float)o.Percentage / 100));
             }
 
             return currentPrice;

@@ -32,6 +32,11 @@ namespace Ipl.Repositories
             return await _repository.FetchSingleOrDefaultByQueryObjectAsync(p => p.ProductTypeId == id);
         }
 
+        public async Task<ProductType> GetByIdAsyncWithRelationships(int id)
+        {
+            return await _repository.FetchSingleOrDefaultByQueryObjectAsync(p => p.ProductTypeId == id, p => p.OfferProductTypes, predicate => predicate.Wares);
+        }
+
         public void Remove(ProductType productType)
         {
             _repository.Delete(productType);

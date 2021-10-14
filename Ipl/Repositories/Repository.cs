@@ -41,9 +41,30 @@ namespace Ipl.Repositories
             return await _entities.Where(predicate).ToArrayAsync();
         }
 
+        public async Task<IEnumerable<TEntity>> FetchManyByQueryObjectAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
+        {
+            foreach (Expression<Func<TEntity, object>> include in includes)
+            {
+                _entities.Include(include);
+            }
+
+            return await _entities.Where(predicate).ToArrayAsync();
+        }
+
         public async Task<TEntity> FetchSingleOrDefaultByQueryObjectAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _entities.SingleOrDefaultAsync(predicate);
+        }
+
+        public async Task<TEntity> FetchSingleOrDefaultByQueryObjectAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = _entities.AsQueryable();
+            foreach(Expression<Func<TEntity, object>> include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.SingleOrDefaultAsync(predicate);
         }
 
         public void Update(TEntity entity)

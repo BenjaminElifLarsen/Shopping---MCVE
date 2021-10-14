@@ -13,6 +13,11 @@ namespace Dal.Models.JoiningTables
         public int ProductTypeId { get; private set; }
         public ProductType ProductType { get; private set; }
 
+        public OfferProductType()
+        {
+
+        }
+
         public OfferProductType(Offer offer, ProductType productType)
         {
             Offer = offer;
