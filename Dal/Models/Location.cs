@@ -11,5 +11,15 @@ namespace Dal.Models
         public int LocationId { get; private set; }
         public string Name { get; private set; }
         public Ware Ware { get; private set; } //set it up in the context so it is added to the ware table
+
+        private Location()
+        {
+
+        }
+
+        public Location(string name)
+        {
+            Name = name;
+        }
     }
 }

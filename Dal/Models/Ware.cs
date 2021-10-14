@@ -18,13 +18,21 @@ namespace Dal.Models
         }
 
         public Ware(string serialNumber, ProductType productType, Location location)
-        {
+        { //check for nulls
             SerialNumber = serialNumber;
             ProductType = productType;
             Location = location;
         }
-        
-        public void UpdateSerialNumber(string serialNumber)
+
+        public Ware(int id, string serialNumber, ProductType productType, Location location)
+        { //dont check for nulls as this one is used to create update entity. Perhaps have a class or record version for updating
+            WareId = id;
+            SerialNumber = serialNumber;
+            ProductType = productType;
+            Location = location;
+        }
+
+        internal void UpdateSerialNumber(string serialNumber)
         {
             if (string.IsNullOrWhiteSpace(serialNumber))
             {
@@ -34,7 +42,7 @@ namespace Dal.Models
             SerialNumber = serialNumber;
         }
 
-        public void UpdateLocation(Location location)
+        internal void UpdateLocation(Location location)
         {
             if(location == null)
             {

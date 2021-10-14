@@ -1,4 +1,5 @@
 ﻿using Dal.Contracts;
+using Dal.Models.JoiningTables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,23 +9,40 @@ namespace Dal.Models
     public class ProductType : IAggregateRoot
     {
         private HashSet<Ware> _wares;
+        private HashSet<OfferProductType> _offerProductTypes;
 
         public int ProductTypeId { get; private set; }
         public string Type { get; private set; }
-        public int Prise { get; private set; }
+        public int Price { get; private set; }
+        public int CategoryId { get; private set; }
+        public Category Category { get; private set; }
         public IEnumerable<Ware> Wares { get => _wares; private set => _wares = value.ToHashSet(); }
+        public IEnumerable<OfferProductType> OfferProductTypes { get => _offerProductTypes; private set => _offerProductTypes = value.ToHashSet(); } // Should not permit adding and removing.
 
         private ProductType()
         {
 
         }
 
-        public ProductType(string type, int prise, IEnumerable<Ware> wares = null)
+        public ProductType(string type, int price, Category category, IEnumerable<Ware> wares = null)
         {
             Type = type;
-            Prise = prise;
+            Price = price;
+            Category = category;
             Wares = wares ?? Array.Empty<Ware>();
         }
+
+        public int CurrentPrice()
+        {
+            int currentPrice = Price;
+            foreach(Offer o in _offerProductTypes.Select(op => op.Offer))
+            {
+                currentPrice *= 1-(o.Percentage / 100);
+            }
+
+            return currentPrice;
+        }
+
 
         public bool AddWare(Ware ware)
         {
@@ -55,8 +73,15 @@ namespace Dal.Models
                 throw new ArgumentException("Ware to update was not found", nameof(ware));
             }
 
-            toUpdate.UpdateSerialNumber(ware.SerialNumber);
-            toUpdate.UpdateLocation(ware.Location);
+            if(ware.SerialNumber != null)
+            {
+                toUpdate.UpdateSerialNumber(ware.SerialNumber);
+            }
+            
+            if(ware.Location != null)
+            {
+                toUpdate.UpdateLocation(ware.Location);
+            }
         }
     }
 }
