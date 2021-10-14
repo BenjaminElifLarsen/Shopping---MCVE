@@ -28,11 +28,15 @@ namespace Ipl.Databases
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<Offer> Offers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<EmployeePermission>()
                 .HasKey(ep => new { ep.EmployeeId, ep.PermissionId });
+
+            builder.Entity<OfferProductType>()
+                .HasKey(op => new { op.OfferId, op.ProductTypeId});
         }
 
 

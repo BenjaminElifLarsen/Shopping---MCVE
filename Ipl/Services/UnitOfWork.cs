@@ -21,6 +21,7 @@ namespace Ipl.Services
             EmployeeRepository = new EmployeeRepository(new Repository<Employee>(_context));
             PermissionRepository = new PermissionRepository(new Repository<Permission>(_context));
             ProductTypeRepository = new ProductTypeRepository(new Repository<ProductType>(_context));
+            OfferRepository = new OfferRepository(new Repository<Offer>(_context));
         }
 
         public ICategoryRepository CategoryRepository { get; }
@@ -31,7 +32,9 @@ namespace Ipl.Services
 
         public IProductTypeRepository ProductTypeRepository { get; }
 
-        public void Dispose()
+        public IOfferRepository OfferRepository { get; }
+
+    public void Dispose()
         {
             _context.Dispose();
         }
