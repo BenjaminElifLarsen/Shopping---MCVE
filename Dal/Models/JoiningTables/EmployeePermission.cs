@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dal.Models
+namespace Dal.Models.JoiningTables
 {
     public class EmployeePermission
     {

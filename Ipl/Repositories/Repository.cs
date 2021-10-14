@@ -21,34 +21,34 @@ namespace Ipl.Repositories
             _entities = _context.Set<TEntity>();
         }
 
-        public Task<IEnumerable<TEntity>> AllAsync()
+        public async Task<IEnumerable<TEntity>> AllAsync()
         {
-            throw new NotImplementedException();
+            return await _entities.ToArrayAsync();
         }
 
         public void Create(TEntity entity)
         {
-            throw new NotImplementedException();
+            _entities.Add(entity);
         }
 
         public void Delete(TEntity entity)
         {
-            throw new NotImplementedException();
+            _entities.Remove(entity);
         }
 
-        public Task<IEnumerable<TEntity>> FetchManyByQueryObjectAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> FetchManyByQueryObjectAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _entities.Where(predicate).ToArrayAsync();
         }
 
-        public Task<TEntity> FetchSingleOrDefaultByQueryObjectAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<TEntity> FetchSingleOrDefaultByQueryObjectAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _entities.SingleOrDefaultAsync(predicate);
         }
 
         public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            _entities.Update(entity);
         }
     }
 }

@@ -17,29 +17,29 @@ namespace Ipl.Repositories
             _repository = repository;
         }
 
-        public Task<IEnumerable<Category>> AllAsync()
+        public async Task<IEnumerable<Category>> AllAsync()
         {
-            throw new NotImplementedException();
+            return await _repository.AllAsync();
         }
 
         public void Create(Category category)
         {
-            throw new NotImplementedException();
+            _repository.Create(category);
         }
 
-        public Task<Category> GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repository.FetchSingleOrDefaultByQueryObjectAsync(c => c.CategoryId == id);
         }
 
         public void Remove(Category category)
         {
-            throw new NotImplementedException();
+            _repository.Delete(category);
         }
 
         public void Update(Category category)
         {
-            throw new NotImplementedException();
+            _repository.Update(category);
         }
     }
 }

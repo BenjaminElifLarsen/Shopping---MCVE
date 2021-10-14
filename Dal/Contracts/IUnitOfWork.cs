@@ -10,7 +10,8 @@ namespace Dal.Contracts
     {
         ICategoryRepository CategoryRepository { get; }
         IEmployeeRepository EmployeeRepository { get; }
-        
+        IPermissionRepository PermissionRepository { get; }
+        IProductTypeRepository ProductTypeRepository { get; }
 
         Task<int> SaveChangesAsync();
     }
