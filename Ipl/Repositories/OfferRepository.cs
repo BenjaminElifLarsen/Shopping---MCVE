@@ -1,9 +1,6 @@
 ﻿using Dal.Contracts;
 using Dal.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Ipl.Repositories
@@ -30,6 +27,11 @@ namespace Ipl.Repositories
         public async Task<Offer> GetByIdAsync(int id)
         {
             return await _repository.FetchSingleOrDefaultByQueryObjectAsync(o => o.OfferId == id);
+        }
+
+        public Task<Offer> GetByIdAsyncWithRelationships(int id)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void Remove(Offer offer)

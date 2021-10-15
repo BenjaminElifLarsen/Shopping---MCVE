@@ -9,14 +9,11 @@ namespace Shopping
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-
-
             using (var unitOfWork = new UnitOfWork(new Ipl.Databases.ShopDbContext()))
             {
                 unitOfWork.CategoryRepository.Create(new("Foods"));
                 unitOfWork.CategoryRepository.Create(new("Computers"));
-                Category c = new Category("Liquids");
+                Category c = new("Liquids");
                 unitOfWork.CategoryRepository.Create(c);
                 Category tools = new("Tools");
                 unitOfWork.CategoryRepository.Create(tools);
@@ -29,7 +26,6 @@ namespace Shopping
                     Console.WriteLine(category);
                 }
                 
-
                 unitOfWork.CategoryRepository.Remove(c);
                 done = unitOfWork.SaveChangesAsync().Result;
 

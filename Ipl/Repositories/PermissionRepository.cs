@@ -1,9 +1,6 @@
 ﻿using Dal.Contracts;
 using Dal.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Ipl.Repositories
@@ -30,6 +27,11 @@ namespace Ipl.Repositories
         public async Task<Permission> GetByIdAsync(int id)
         {
             return await _repository.FetchSingleOrDefaultByQueryObjectAsync(p => p.PermissionId == id);
+        }
+
+        public Task<Permission> GetByIdAsyncWithRelationships(int id)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void Remove(Permission permission)

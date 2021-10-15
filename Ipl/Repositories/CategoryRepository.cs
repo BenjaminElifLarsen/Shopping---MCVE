@@ -32,6 +32,11 @@ namespace Ipl.Repositories
             return await _repository.FetchSingleOrDefaultByQueryObjectAsync(c => c.CategoryId == id);
         }
 
+        public Task<Category> GetByIdAsyncWithRelationships(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Remove(Category category)
         {
             _repository.Delete(category);

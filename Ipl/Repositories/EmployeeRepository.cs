@@ -32,6 +32,11 @@ namespace Ipl.Repositories
             return await _repository.FetchSingleOrDefaultByQueryObjectAsync(e => e.EmployeeId == id);
         }
 
+        public Task<Employee> GetByIdAsyncWithRelationships(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Remove(Employee employee)
         {
             _repository.Delete(employee);
