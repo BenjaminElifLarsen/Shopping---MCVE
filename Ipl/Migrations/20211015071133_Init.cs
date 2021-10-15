@@ -2,7 +2,7 @@
 
 namespace Ipl.Migrations
 {
-    public partial class tables : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,9 +10,9 @@ namespace Ipl.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    CategoryId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -23,10 +23,10 @@ namespace Ipl.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    EmployeeId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Username = table.Column<string>(type: "TEXT", nullable: true),
-                    HashedPassword = table.Column<string>(type: "TEXT", nullable: true)
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HashedPassword = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -37,9 +37,9 @@ namespace Ipl.Migrations
                 name: "Location",
                 columns: table => new
                 {
-                    LocationId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    LocationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,12 +47,28 @@ namespace Ipl.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Offers",
+                columns: table => new
+                {
+                    OfferId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Percentage = table.Column<byte>(type: "tinyint", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Offers", x => x.OfferId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Permissions",
                 columns: table => new
                 {
-                    PermissionId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Type = table.Column<string>(type: "TEXT", nullable: true)
+                    PermissionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,11 +79,11 @@ namespace Ipl.Migrations
                 name: "ProductTypes",
                 columns: table => new
                 {
-                    ProductTypeId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Type = table.Column<string>(type: "TEXT", nullable: true),
-                    Prise = table.Column<int>(type: "INTEGER", nullable: false),
-                    CategoryId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ProductTypeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,15 +93,15 @@ namespace Ipl.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "EmployeePermission",
                 columns: table => new
                 {
-                    EmployeeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    PermissionId = table.Column<int>(type: "INTEGER", nullable: false)
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    PermissionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,14 +121,38 @@ namespace Ipl.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OfferProductType",
+                columns: table => new
+                {
+                    OfferId = table.Column<int>(type: "int", nullable: false),
+                    ProductTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OfferProductType", x => new { x.OfferId, x.ProductTypeId });
+                    table.ForeignKey(
+                        name: "FK_OfferProductType_Offers_OfferId",
+                        column: x => x.OfferId,
+                        principalTable: "Offers",
+                        principalColumn: "OfferId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OfferProductType_ProductTypes_ProductTypeId",
+                        column: x => x.ProductTypeId,
+                        principalTable: "ProductTypes",
+                        principalColumn: "ProductTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Ware",
                 columns: table => new
                 {
-                    WareId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    SerialNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    ProductTypeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    LocationId = table.Column<int>(type: "INTEGER", nullable: false)
+                    WareId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductTypeId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,6 +177,11 @@ namespace Ipl.Migrations
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OfferProductType_ProductTypeId",
+                table: "OfferProductType",
+                column: "ProductTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductTypes_CategoryId",
                 table: "ProductTypes",
                 column: "CategoryId");
@@ -159,6 +204,9 @@ namespace Ipl.Migrations
                 name: "EmployeePermission");
 
             migrationBuilder.DropTable(
+                name: "OfferProductType");
+
+            migrationBuilder.DropTable(
                 name: "Ware");
 
             migrationBuilder.DropTable(
@@ -166,6 +214,9 @@ namespace Ipl.Migrations
 
             migrationBuilder.DropTable(
                 name: "Permissions");
+
+            migrationBuilder.DropTable(
+                name: "Offers");
 
             migrationBuilder.DropTable(
                 name: "Location");

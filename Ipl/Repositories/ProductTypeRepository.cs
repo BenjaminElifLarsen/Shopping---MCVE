@@ -3,6 +3,7 @@ using Dal.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using Dal.Models.JoiningTables;
 
 namespace Ipl.Repositories
 {
@@ -32,7 +33,7 @@ namespace Ipl.Repositories
 
         public async Task<ProductType> GetByIdAsyncWithRelationships(int id)
         {
-            return await _repository.FetchSingleOrDefaultByQueryObjectAsync(p => p.ProductTypeId == id, p => p.OfferProductTypes.Include(), p => p.Wares);
+            return await _repository.FetchSingleOrDefaultByQueryObjectAsync(p => p.ProductTypeId == id, p => (p.Wares as Ware).Location, p => (p.OfferProductTypes as OfferProductType).Offer );
         }
 
         public void Remove(ProductType productType)

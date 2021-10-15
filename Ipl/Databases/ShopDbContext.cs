@@ -21,8 +21,8 @@ namespace Ipl.Databases
            
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite($"Data Source=ShoppingLite");
+        protected override void OnConfiguring(DbContextOptionsBuilder options) //used for the cli, need to check if it is only called by the parameterless ctor.
+            => options.UseSqlServer($"Server=(localdb)\\MSSQLLocalDB;Database=Shoping;Trusted_Connection=True;MultipleActiveResultSets=true"); //options.UseSqlite($"Data Source=ShoppingLite");
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Employee> Employees { get; set; }

@@ -43,12 +43,12 @@ namespace Ipl.Repositories
 
         public async Task<IEnumerable<TEntity>> FetchManyByQueryObjectAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
         {
-            foreach (Expression<Func<TEntity, object>> include in includes)
-            {
-                _entities.Include(include);
-            }
+            var query = _entities.AsQueryable();
 
-            return await _entities.Where(predicate).ToArrayAsync();
+            query = includes.Aggregate(query,
+                      (current, include) => current.Include(include));
+
+            return await query.Where(predicate).ToArrayAsync();
         }
 
         public async Task<TEntity> FetchSingleOrDefaultByQueryObjectAsync(Expression<Func<TEntity, bool>> predicate)
@@ -59,10 +59,9 @@ namespace Ipl.Repositories
         public async Task<TEntity> FetchSingleOrDefaultByQueryObjectAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includes)
         {
             var query = _entities.AsQueryable();
-            foreach(Expression<Func<TEntity, object>> include in includes)
-            {
-                query = query.Include(include);
-            }
+
+            query = includes.Aggregate(query,
+                      (current, include) => current.Include(include));
 
             return await query.SingleOrDefaultAsync(predicate);
         }

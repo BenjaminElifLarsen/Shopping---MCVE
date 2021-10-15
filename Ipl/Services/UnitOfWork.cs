@@ -34,7 +34,7 @@ namespace Ipl.Services
 
         public IOfferRepository OfferRepository { get; }
 
-    public void Dispose()
+        public void Dispose()
         {
             _context.Dispose();
         }
