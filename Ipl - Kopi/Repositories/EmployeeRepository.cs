@@ -1,6 +1,5 @@
 ﻿using Dal.Contracts;
 using Dal.Models;
-using Ipl.Databases;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,25 +10,26 @@ namespace Ipl.Repositories
 {
     class EmployeeRepository : IEmployeeRepository
     {
-        private readonly ShopDbContext _shopDbContext;
-        public EmployeeRepository(ShopDbContext shopDbContext)
+        private Repository<Employee> _repository;
+
+        public EmployeeRepository(Repository<Employee> repository)
         {
-            _shopDbContext = shopDbContext;
+            _repository = repository;
         }
 
-        public Task<IEnumerable<Employee>> AllAsync()
+        public async Task<IEnumerable<Employee>> AllAsync()
         {
-            throw new NotImplementedException();
+            return await _repository.AllAsync();
         }
 
         public void Create(Employee employee)
         {
-            throw new NotImplementedException();
+            _repository.Create(employee);
         }
 
-        public Task<Employee> GetByIdAsync(int id)
+        public async Task<Employee> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repository.FetchSingleOrDefaultByQueryObjectAsync(e => e.EmployeeId == id);
         }
 
         public Task<Employee> GetByIdAsyncWithRelationships(int id)
@@ -39,12 +39,12 @@ namespace Ipl.Repositories
 
         public void Remove(Employee employee)
         {
-            throw new NotImplementedException();
+            _repository.Delete(employee);
         }
 
         public void Update(Employee employee)
         {
-            throw new NotImplementedException();
+            _repository.Update(employee);
         }
     }
 }

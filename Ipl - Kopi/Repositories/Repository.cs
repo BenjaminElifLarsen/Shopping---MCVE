@@ -13,7 +13,7 @@ namespace Ipl.Repositories
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IAggregateRoot
     {
         private readonly ShopDbContext _context;
-        private readonly DbSet<TEntity> _entities;
+        public readonly DbSet<TEntity> _entities;
 
         public Repository(ShopDbContext shopDbContext) // These should not save, only the UnitOfWork should permit saving.
         {

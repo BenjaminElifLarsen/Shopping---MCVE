@@ -1,49 +1,56 @@
 ﻿using Dal.Contracts;
 using Dal.Models;
+using Ipl.Databases;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
-using Dal.Models.JoiningTables;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Ipl.Repositories
 {
     class ProductTypeRepository : IProductTypeRepository
     {
-        private Repository<ProductType> _repository;
-
-        public ProductTypeRepository(Repository<ProductType> repository)
+        private readonly ShopDbContext _shopDbContext;
+        public ProductTypeRepository(ShopDbContext shopDbContext)
         {
-            _repository = repository;
+            _shopDbContext = shopDbContext;
         }
 
         public async Task<IEnumerable<ProductType>> AllAsync()
         {
-            return await _repository.AllAsync();
+            return await _shopDbContext.ProductTypes.ToArrayAsync();
         }
 
         public void Create(ProductType productType)
         {
-            _repository.Create(productType);
+            _shopDbContext.Add(productType);
         }
 
         public async Task<ProductType> GetByIdAsync(int id)
         {
-            return await _repository.FetchSingleOrDefaultByQueryObjectAsync(p => p.ProductTypeId == id);
+            return await _shopDbContext.ProductTypes.SingleOrDefaultAsync(p => p.ProductTypeId == id);
         }
 
         public async Task<ProductType> GetByIdAsyncWithRelationships(int id)
         {
-            return await _repository.FetchSingleOrDefaultByQueryObjectAsync(p => p.ProductTypeId == id, p => (p.Wares as Ware).Location, p => (p.OfferProductTypes as OfferProductType).Offer );
+            return await _shopDbContext.ProductTypes
+                .Include(p => p.OfferProductTypes)
+                    .ThenInclude(op => op.Offer)
+                .Include(p => p.Wares)
+                .Include(p => p.Category)
+                .SingleOrDefaultAsync(p => p.ProductTypeId == id);
         }
 
         public void Remove(ProductType productType)
         {
-            _repository.Delete(productType);
+            _shopDbContext.Remove(productType);
         }
 
         public void Update(ProductType productType)
         {
-            _repository.Update(productType);
+            _shopDbContext.Update(productType);
         }
     }
 }

@@ -17,11 +17,11 @@ namespace Ipl.Services
         public UnitOfWork(ShopDbContext shopDbContext)
         {
             _context = shopDbContext;
-            CategoryRepository = new CategoryRepository(_context);
-            EmployeeRepository = new EmployeeRepository(_context);
-            PermissionRepository = new PermissionRepository(_context);
-            ProductTypeRepository = new ProductTypeRepository(_context);
-            OfferRepository = new OfferRepository(_context);
+            CategoryRepository = new CategoryRepository(new Repository<Category>(_context));
+            EmployeeRepository = new EmployeeRepository(new Repository<Employee>(_context));
+            PermissionRepository = new PermissionRepository(new Repository<Permission>(_context));
+            ProductTypeRepository = new ProductTypeRepository(new Repository<ProductType>(_context));
+            OfferRepository = new OfferRepository(new Repository<Offer>(_context));
         }
 
         public ICategoryRepository CategoryRepository { get; }

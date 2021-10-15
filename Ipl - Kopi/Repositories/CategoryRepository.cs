@@ -1,7 +1,5 @@
 ﻿using Dal.Contracts;
 using Dal.Models;
-using Ipl.Databases;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,25 +10,26 @@ namespace Ipl.Repositories
 {
     class CategoryRepository : ICategoryRepository
     {
-        private readonly ShopDbContext _shopDbContext;
-        public CategoryRepository(ShopDbContext shopDbContext)
+        private Repository<Category> _repository;
+
+        public CategoryRepository(Repository<Category> repository)
         {
-            _shopDbContext = shopDbContext;
+            _repository = repository;
         }
 
         public async Task<IEnumerable<Category>> AllAsync()
         {
-            return await _shopDbContext.Categories.ToArrayAsync();
+            return await _repository.AllAsync();
         }
 
         public void Create(Category category)
         {
-            _shopDbContext.Add(category);
+            _repository.Create(category);
         }
 
-        public Task<Category> GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repository.FetchSingleOrDefaultByQueryObjectAsync(c => c.CategoryId == id);
         }
 
         public Task<Category> GetByIdAsyncWithRelationships(int id)
@@ -40,12 +39,12 @@ namespace Ipl.Repositories
 
         public void Remove(Category category)
         {
-            _shopDbContext.Remove(category);
+            _repository.Delete(category);
         }
 
         public void Update(Category category)
         {
-            throw new NotImplementedException();
+            _repository.Update(category);
         }
     }
 }

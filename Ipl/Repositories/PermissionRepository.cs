@@ -1,47 +1,50 @@
 ﻿using Dal.Contracts;
 using Dal.Models;
+using Ipl.Databases;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Ipl.Repositories
 {
     class PermissionRepository : IPermissionRepository
     {
-        private Repository<Permission> _repository;
-
-        public PermissionRepository(Repository<Permission> repository)
+        private readonly ShopDbContext _shopDbContext;
+        public PermissionRepository(ShopDbContext shopDbContext)
         {
-            _repository = repository;
+            _shopDbContext = shopDbContext;
         }
 
-        public async Task<IEnumerable<Permission>> AllAsync()
+        public Task<IEnumerable<Permission>> AllAsync()
         {
-            return await _repository.AllAsync();
+            throw new NotImplementedException();
         }
 
         public void Create(Permission permission)
         {
-            _repository.Create(permission);
+            throw new NotImplementedException();
         }
 
-        public async Task<Permission> GetByIdAsync(int id)
+        public Task<Permission> GetByIdAsync(int id)
         {
-            return await _repository.FetchSingleOrDefaultByQueryObjectAsync(p => p.PermissionId == id);
+            throw new NotImplementedException();
         }
 
         public Task<Permission> GetByIdAsyncWithRelationships(int id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Remove(Permission permission)
         {
-            _repository.Delete(permission);
+            throw new NotImplementedException();
         }
 
         public void Update(Permission permission)
         {
-            _repository.Update(permission);
+            throw new NotImplementedException();
         }
     }
 }

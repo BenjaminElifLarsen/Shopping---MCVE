@@ -45,6 +45,15 @@ namespace Dal.Models
         }
 
 
+        public void UpdateType(string type)
+        {
+            if(string.IsNullOrWhiteSpace(type))
+            {
+                throw new ArgumentNullException(nameof(type), "Cannot be null or empty");
+            }
+            Type = type;
+        }
+
         public bool AddWare(Ware ware)
         {
             if (ware == null)

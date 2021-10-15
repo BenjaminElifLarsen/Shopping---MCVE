@@ -1,4 +1,5 @@
 ﻿using Dal.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
