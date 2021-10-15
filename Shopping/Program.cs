@@ -2,6 +2,7 @@
 using Dal.Models;
 using Ipl.Repositories;
 using Ipl.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading;
@@ -12,7 +13,7 @@ namespace Shopping
     {
         static void Main(string[] args)
         {
-            using (var unitOfWork = new UnitOfWork(new Ipl.Databases.ShopDbContext()))
+            using (var unitOfWork = new Ipl.Databases.ShopDbContext())
             {
                 //unitOfWork.CategoryRepository.Create(new("Foods"));
                 //unitOfWork.CategoryRepository.Create(new("Computers"));
@@ -51,7 +52,7 @@ namespace Shopping
                 p.AddWare(w4);
                 p.AddWare(w5);
 
-                unitOfWork.ProductTypeRepository.Create(p);
+                unitOfWork.Add(p);
                 //done = unitOfWork.SaveChangesAsync().Result;
 
                 //Console.WriteLine($"Product Id: {p.ProductTypeId}, Type: {p.Type}, Price: {p.CurrentPrice()}, Category Name: {p.Category.Name}");
@@ -73,8 +74,13 @@ namespace Shopping
                 //done = unitOfWork.SaveChangesAsync().Result;
                 //int id = p.ProductTypeId;
 
-                ProductType selected = unitOfWork.ProductTypeRepository.GetByIdAsync(46).Result;
-                ProductType selected2 = unitOfWork.ProductTypeRepository.GetByIdAsyncWithRelationships(51).Result;
+                ProductType selected = unitOfWork.ProductTypes.SingleOrDefault(x => x.ProductTypeId == 46);
+                ProductType selected2 = unitOfWork.ProductTypes
+                .Include(p => p.OfferProductTypes)
+                    .ThenInclude(op => op.Offer)
+                .Include(p => p.Wares)
+                .Include(p => p.Category).
+                SingleOrDefault(x => x.ProductTypeId == 52);
                 //selected.UpdateType(new Guid().ToString());
                 //unitOfWork.ProductTypeRepository.Update(selected);
                 Console.WriteLine("____");
