@@ -17,10 +17,4 @@
     <ProjectReference Include="..\Ipl\Ipl.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="ShoppingLite">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

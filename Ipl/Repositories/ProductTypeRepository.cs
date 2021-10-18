@@ -37,7 +37,6 @@ namespace Ipl.Repositories
         {
             return await _shopDbContext.ProductTypes
                 .Include(p => p.OfferProductTypes)
-                    .ThenInclude(op => op.Offer)
                 .Include(p => p.Wares)
                 .Include(p => p.Category)
                 .SingleOrDefaultAsync(p => p.ProductTypeId == id);

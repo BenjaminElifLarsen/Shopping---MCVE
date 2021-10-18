@@ -30,40 +30,7 @@ namespace Ipl.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Dal.Models.Employee", b =>
-                {
-                    b.Property<int>("EmployeeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("HashedPassword")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("EmployeeId");
-
-                    b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("Dal.Models.JoiningTables.EmployeePermission", b =>
-                {
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeeId", "PermissionId");
-
-                    b.HasIndex("PermissionId");
-
-                    b.ToTable("EmployeePermission");
+                    b.ToTable("TestCategories");
                 });
 
             modelBuilder.Entity("Dal.Models.JoiningTables.OfferProductType", b =>
@@ -117,22 +84,7 @@ namespace Ipl.Migrations
 
                     b.HasKey("OfferId");
 
-                    b.ToTable("Offers");
-                });
-
-            modelBuilder.Entity("Dal.Models.Permission", b =>
-                {
-                    b.Property<int>("PermissionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PermissionId");
-
-                    b.ToTable("Permissions");
+                    b.ToTable("Offer");
                 });
 
             modelBuilder.Entity("Dal.Models.ProductType", b =>
@@ -182,25 +134,6 @@ namespace Ipl.Migrations
                     b.HasIndex("ProductTypeId");
 
                     b.ToTable("Ware");
-                });
-
-            modelBuilder.Entity("Dal.Models.JoiningTables.EmployeePermission", b =>
-                {
-                    b.HasOne("Dal.Models.Employee", "Employee")
-                        .WithMany("EmployeePermissions")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Dal.Models.Permission", "Permission")
-                        .WithMany("EmployeePermissions")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Permission");
                 });
 
             modelBuilder.Entity("Dal.Models.JoiningTables.OfferProductType", b =>
@@ -257,11 +190,6 @@ namespace Ipl.Migrations
                     b.Navigation("ProductTypes");
                 });
 
-            modelBuilder.Entity("Dal.Models.Employee", b =>
-                {
-                    b.Navigation("EmployeePermissions");
-                });
-
             modelBuilder.Entity("Dal.Models.Location", b =>
                 {
                     b.Navigation("Ware");
@@ -270,11 +198,6 @@ namespace Ipl.Migrations
             modelBuilder.Entity("Dal.Models.Offer", b =>
                 {
                     b.Navigation("OfferProductTypes");
-                });
-
-            modelBuilder.Entity("Dal.Models.Permission", b =>
-                {
-                    b.Navigation("EmployeePermissions");
                 });
 
             modelBuilder.Entity("Dal.Models.ProductType", b =>

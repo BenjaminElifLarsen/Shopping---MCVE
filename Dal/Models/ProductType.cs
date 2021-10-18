@@ -3,6 +3,7 @@ using Dal.Models.JoiningTables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Dal.Models
 {
@@ -15,6 +16,7 @@ namespace Dal.Models
         public string Type { get; private set; }
         public int Price { get; private set; }
         public int CategoryId { get; private set; }
+
         public Category Category { get; private set; }
         public IEnumerable<Ware> Wares { get => _wares; private set => _wares = value.ToHashSet(); }
         public IEnumerable<OfferProductType> OfferProductTypes { get => _offerProductTypes; private set => _offerProductTypes = value.ToHashSet(); } // Should not permit adding and removing.

@@ -7,33 +7,6 @@ namespace Ipl.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    EmployeeId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HashedPassword = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.EmployeeId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Location",
                 columns: table => new
                 {
@@ -47,7 +20,7 @@ namespace Ipl.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Offers",
+                name: "Offer",
                 columns: table => new
                 {
                     OfferId = table.Column<int>(type: "int", nullable: false)
@@ -59,20 +32,20 @@ namespace Ipl.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Offers", x => x.OfferId);
+                    table.PrimaryKey("PK_Offer", x => x.OfferId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Permissions",
+                name: "TestCategories",
                 columns: table => new
                 {
-                    PermissionId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Permissions", x => x.PermissionId);
+                    table.PrimaryKey("PK_TestCategories", x => x.CategoryId);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,34 +62,10 @@ namespace Ipl.Migrations
                 {
                     table.PrimaryKey("PK_ProductTypes", x => x.ProductTypeId);
                     table.ForeignKey(
-                        name: "FK_ProductTypes_Categories_CategoryId",
+                        name: "FK_ProductTypes_TestCategories_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        principalTable: "TestCategories",
                         principalColumn: "CategoryId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmployeePermission",
-                columns: table => new
-                {
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    PermissionId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeePermission", x => new { x.EmployeeId, x.PermissionId });
-                    table.ForeignKey(
-                        name: "FK_EmployeePermission_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EmployeePermission_Permissions_PermissionId",
-                        column: x => x.PermissionId,
-                        principalTable: "Permissions",
-                        principalColumn: "PermissionId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -131,9 +80,9 @@ namespace Ipl.Migrations
                 {
                     table.PrimaryKey("PK_OfferProductType", x => new { x.OfferId, x.ProductTypeId });
                     table.ForeignKey(
-                        name: "FK_OfferProductType_Offers_OfferId",
+                        name: "FK_OfferProductType_Offer_OfferId",
                         column: x => x.OfferId,
-                        principalTable: "Offers",
+                        principalTable: "Offer",
                         principalColumn: "OfferId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -172,11 +121,6 @@ namespace Ipl.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeePermission_PermissionId",
-                table: "EmployeePermission",
-                column: "PermissionId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OfferProductType_ProductTypeId",
                 table: "OfferProductType",
                 column: "ProductTypeId");
@@ -201,22 +145,13 @@ namespace Ipl.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EmployeePermission");
-
-            migrationBuilder.DropTable(
                 name: "OfferProductType");
 
             migrationBuilder.DropTable(
                 name: "Ware");
 
             migrationBuilder.DropTable(
-                name: "Employees");
-
-            migrationBuilder.DropTable(
-                name: "Permissions");
-
-            migrationBuilder.DropTable(
-                name: "Offers");
+                name: "Offer");
 
             migrationBuilder.DropTable(
                 name: "Location");
@@ -225,7 +160,7 @@ namespace Ipl.Migrations
                 name: "ProductTypes");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "TestCategories");
         }
     }
 }
